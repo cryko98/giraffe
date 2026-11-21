@@ -250,13 +250,13 @@
     root.setAttribute("data-edition", ed);
     editionBtns.forEach(function (b) { b.setAttribute("aria-pressed", String(b.dataset.setEdition === ed)); });
     $all(".js-logo").forEach(function (img) {
-      var src = img.getAttribute(ed === "mono" ? "data-mono" : "data-green");
+      var src = img.getAttribute(ed === "mono" ? "data-mono" : "data-gold");
       if (src && img.getAttribute("src") !== src) img.setAttribute("src", src);
     });
-    store("giraffe-edition-v2", ed);
+    store("giraffe-edition-v3", ed);
   }
-  var savedEd = store("giraffe-edition-v2");
-  if (savedEd === "mono" || savedEd === "green") setEdition(savedEd);
+  var savedEd = store("giraffe-edition-v3");
+  if (savedEd === "mono" || savedEd === "gold") setEdition(savedEd);
   editionBtns.forEach(function (b) { b.addEventListener("click", function () { setEdition(b.dataset.setEdition); }); });
 
   /* ======================================================================

@@ -11,8 +11,8 @@
   --night: #0f0d0b;
   --night-ink: #ece6d6;
 
-  --accent: #1e8a29;          /* readable on paper */
-  --accent-bright: #3dff41;   /* neon, used on black */
+  --accent: #94701c;          /* antique gold, readable on paper */
+  --accent-bright: #e8c15f;   /* bright gold, used on black */
 
   --f-black: "UnifrakturMaguntia", "Old English Text MT", serif;
   --f-display: "Playfair Display", "Didot", "Bodoni MT", serif;
@@ -129,7 +129,7 @@ a { color: inherit; }
 }
 .edition__btn + .edition__btn { border-left: 0; }
 .edition__btn[aria-pressed="true"] { background: var(--night-ink); color: var(--night); border-color: var(--night-ink); }
-html[data-edition="green"] .edition__btn[data-set-edition="green"] { background: var(--accent-bright); border-color: var(--accent-bright); color: #051806; }
+html[data-edition="gold"] .edition__btn[data-set-edition="gold"] { background: var(--accent-bright); border-color: var(--accent-bright); color: #1e1606; }
 
 .icon-btn {
   display: inline-grid;
@@ -992,7 +992,7 @@ html.has-flipped .peel-hint { opacity: 0; }
   width: 100%;
   height: auto;
   background:
-    radial-gradient(ellipse at 60% 40%, rgba(61,255,65,.14), transparent 60%),
+    radial-gradient(ellipse at 60% 40%, rgba(232,193,95,.16), transparent 60%),
     var(--night);
   border: 1px solid var(--ink);
   outline: 1px solid var(--ink);

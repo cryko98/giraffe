@@ -374,6 +374,30 @@
   bookEl.style.minWidth = "";
   bookEl.style.minHeight = "";
 
+  // Library bug: flipNext()/flipPrev() aim at fixed points (x = 10, y = 1) measured from the
+  // container's edge, which miss the book whenever it is centred inside a larger container
+  // (prev never worked; next failed whenever the page was vertically centred). Aim at the
+  // real corners of the visible page instead.
+  window.giraffeBook = pf; // handy for debugging in the console
+  var flipCtl = pf.getFlipController();
+  // Its corner hit-test is also wrong for the single page in portrait mode, so programmatic
+  // flips skip that test (it only exists to stop accidental clicks, not buttons/keys).
+  function cornerY(r, corner) { return corner === "bottom" ? r.top + r.height - 2 : r.top + 1; }
+  function programmaticFlip(ctl, pos) {
+    var s = pf.getSettings(), prev = s.disableFlipByClick;
+    s.disableFlipByClick = false;
+    try { ctl.flip(pos); } finally { s.disableFlipByClick = prev; }
+  }
+  flipCtl.flipNext = function (corner) {
+    var r = pf.getRender().getRect();
+    programmaticFlip(this, { x: r.left + r.pageWidth * 2 - 10, y: cornerY(r, corner) });
+  };
+  flipCtl.flipPrev = function (corner) {
+    var r = pf.getRender().getRect();
+    var left = pf.getOrientation() === "portrait" ? r.left + r.pageWidth : r.left;
+    programmaticFlip(this, { x: left + 10, y: cornerY(r, corner) });
+  };
+
   function soften() {
     try { pf.getPage(0).setDensity("soft"); pf.getPage(N - 1).setDensity("soft"); } catch (e) {}
   }

@@ -220,9 +220,9 @@
       var src = img.getAttribute(ed === "mono" ? "data-mono" : "data-green");
       if (src && img.getAttribute("src") !== src) img.setAttribute("src", src);
     });
-    store("giraffe-edition", ed);
+    store("giraffe-edition-v2", ed);
   }
-  var savedEd = store("giraffe-edition");
+  var savedEd = store("giraffe-edition-v2");
   if (savedEd === "mono" || savedEd === "green") setEdition(savedEd);
   editionBtns.forEach(function (b) { b.addEventListener("click", function () { setEdition(b.dataset.setEdition); }); });
 

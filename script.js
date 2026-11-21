@@ -3,7 +3,7 @@
   "use strict";
 
   // ---- Fill these in later ------------------------------------------------
-  var X_URL = "#";            // e.g. "https://x.com/yourhandle"
+  var X_URL = "https://x.com/thegiraffepf";
   var CONTRACT_ADDRESS = "GwSkMEy1pRgNuMSdrApdX6DaexBopgLm5KU32VP9pump"; // $GIRAFFE on Solana
   // -------------------------------------------------------------------------
 

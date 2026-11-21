@@ -518,7 +518,7 @@ html[data-edition="green"] .edition__btn[data-set-edition="green"] { background:
   text-transform: uppercase;
 }
 .toc ol { list-style: none; margin: 0; padding: 0; }
-.toc button {
+.toc li button {
   display: flex;
   align-items: baseline;
   width: 100%;
@@ -532,28 +532,169 @@ html[data-edition="green"] .edition__btn[data-set-edition="green"] { background:
   font-size: .8em;
   line-height: 1.2;
 }
-.toc button span { flex: none; max-width: 85%; transition: color .2s; }
-.toc button::after {
+.toc li button span { flex: none; max-width: 85%; transition: color .2s; }
+.toc li button::after {
   content: "";
   order: 1;
   flex: 1;
   border-bottom: 1px dotted var(--ink-3);
   transform: translateY(-.2em);
 }
-.toc button i { order: 2; font-style: normal; font-family: var(--f-display); font-weight: 900; }
-.toc button:hover span { color: var(--accent); }
+.toc li button i { order: 2; font-style: normal; font-family: var(--f-display); font-weight: 900; }
+.toc li button:hover span { color: var(--accent); }
 .toc__ca {
+  display: block;
+  width: 100%;
   margin: auto 0 0 !important;
   padding: .5em .4em;
   border: 1px solid var(--ink);
+  background: none;
+  color: var(--ink-2);
+  cursor: pointer;
   text-align: center;
   font-family: var(--f-label);
   font-size: .5em;
   letter-spacing: .2em;
   text-transform: uppercase;
   line-height: 1.7;
+  transition: background .2s, color .2s;
 }
 .toc__ca em { font-family: var(--f-old); font-size: 1.9em; letter-spacing: 0; text-transform: none; color: var(--ink); }
+.toc__ca:hover { background: var(--ink); color: var(--paper); }
+.toc__ca:hover em { color: var(--paper); }
+[data-copy-label].is-copied { color: var(--accent); }
+.toc__ca:hover [data-copy-label].is-copied { color: var(--paper); }
+.back__ca {
+  padding: 0;
+  border: 0;
+  border-bottom: 1px dotted currentColor;
+  background: none;
+  cursor: pointer;
+  font-family: ui-monospace, Menlo, Consolas, monospace;
+  font-size: 1.05em;
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--ink);
+}
+.back__ca:hover { color: var(--accent); }
+.ad-ca {
+  display: block;
+  margin-top: .3em;
+  font-family: ui-monospace, Menlo, Consolas, monospace;
+  font-size: .8em;
+  line-height: 1.35;
+  letter-spacing: 0;
+  hyphens: none;
+  -webkit-hyphens: none;
+  word-break: break-all;
+  text-align: center;
+}
+
+/* =========================================================
+   CENTREFOLD — Before the Bull, There Was the Giraffe
+   ========================================================= */
+.beasts-head {
+  margin: .35em 0 0;
+  font-family: var(--f-display);
+  font-weight: 900;
+  font-size: 2.3em;
+  line-height: 1.05;
+  letter-spacing: -.015em;
+  white-space: nowrap;
+}
+.beasts-sub {
+  margin: .12em 0 0 !important;
+  font-family: var(--f-display);
+  font-style: italic;
+  font-weight: 700;
+  font-size: 1.05em;
+  color: var(--ink-2);
+}
+.beasts-page--left .beasts-head, .beasts-page--left .beasts-sub, .beasts-page--left .beasts-foot { text-align: right; }
+.beasts-page--right .beasts-head, .beasts-page--right .beasts-sub, .beasts-page--right .beasts-foot { text-align: left; }
+
+.beasts {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  margin: 2.4em 0 1em;   /* fixed, so the timeline lines up across the spine */
+}
+.beast {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0;
+  padding: 0 .8em;
+  text-align: center;
+}
+.beast + .beast { border-left: 1px solid rgba(27,23,17,.55); }
+.beasts-page--left .beast:first-child { padding-left: 0; }
+.beasts-page--right .beast:last-child { padding-right: 0; }
+.beast__fig { font-family: var(--f-old-sc); font-size: .64em; letter-spacing: .1em; color: var(--ink-3); }
+.beast__img {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  width: 100%;
+  height: 15.5em;
+  margin-top: .4em;
+}
+.beast__img img {
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+  mix-blend-mode: multiply;
+  filter: sepia(.3) contrast(1.06);
+  transform-origin: 50% 100%;
+  opacity: 0;
+  transform: translateY(.5em);
+}
+.beasts.is-in .beast__img img { animation: ink-in 1s cubic-bezier(.2,.7,.2,1) forwards; }
+.beasts.is-in .beast:nth-child(2) .beast__img img { animation-delay: .25s; }
+@keyframes ink-in {
+  0% { opacity: 0; transform: translateY(.5em); filter: sepia(.3) contrast(1.06) blur(2px) brightness(1.6); }
+  100% { opacity: 1; transform: none; filter: sepia(.3) contrast(1.06); }
+}
+.beast:hover .beast__img img { transform: translateY(-.25em) scale(1.03); transition: transform .45s cubic-bezier(.2,.7,.2,1); }
+
+.beast__dot { position: relative; display: block; align-self: stretch; height: 1.2em; margin: .55em -.8em .3em; }
+.beasts-page--left .beast:first-child .beast__dot { margin-left: 0; }
+.beasts-page--right .beast:last-child .beast__dot { margin-right: 0; }
+.beast__dot::before { content: ""; position: absolute; left: 0; right: 0; top: 50%; border-top: 2px solid var(--ink); }
+.beasts-page--left .beast:last-child .beast__dot::before { right: -5.2cqw; }   /* run the line into the spine */
+.beasts-page--right .beast:first-child .beast__dot::before { left: -5.2cqw; }
+.beast__dot::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: .62em;
+  height: .62em;
+  background: var(--ink);
+  transform: translate(-50%, -50%) rotate(45deg);
+  transition: transform .3s, background .3s;
+}
+.beasts-page--left .beast:first-child .beast__dot::after { left: calc(50% + .4em); }
+.beasts-page--right .beast:last-child .beast__dot::after { left: calc(50% - .4em); }
+.beast:hover .beast__dot::after { transform: translate(-50%, -50%) rotate(225deg) scale(1.3); }
+.beast.is-key .beast__dot::after { background: var(--accent); }
+.beast__year { display: block; font-family: var(--f-display); font-weight: 900; font-size: 2.1em; line-height: 1; margin-top: .1em; }
+.beast.is-key .beast__year { color: var(--accent); }
+.beast__name { margin-top: .2em; font-family: var(--f-old-sc); font-size: .95em; letter-spacing: .06em; }
+.beast p { margin: .4em 0 0 !important; max-width: 15em; font-family: var(--f-old); font-style: italic; font-size: .74em; line-height: 1.3; color: var(--ink-2); }
+
+.beasts-foot {
+  margin: auto 0 0 !important;
+  padding-top: .5em;
+  border-top: 3px double var(--ink);
+  font-family: var(--f-old);
+  font-style: italic;
+  font-size: .78em;
+  color: var(--ink);
+}
+.beasts-foot span { font-family: var(--f-label); font-style: normal; font-size: .78em; letter-spacing: .18em; text-transform: uppercase; color: var(--ink-3); }
+.beasts-foot--right span.g { color: var(--accent); }
 .cover__lede {
   margin: auto 0 0 !important;
   padding-top: .5em;
@@ -1255,6 +1396,8 @@ html[data-edition="mono"] .chart svg { background: var(--night); }
   .reader__page .cover__name { grid-column: 1 / -1; order: -1; }
   .reader__page .cover__strip > span:nth-child(2) { display: none; }
   .reader__page .author { grid-template-columns: 6.5em 1fr; }
+  .reader__page .beasts-head { white-space: normal; font-size: 1.9em; }
+  .reader__page .beast__img { height: 11em; }
 }
 
 /* =========================================================
@@ -1280,9 +1423,11 @@ html.no-flip body { overflow: auto; height: auto; display: block; }
 html.no-flip .bar--bottom { display: none; }
 html.no-flip .book { display: flex; flex-direction: column; align-items: center; gap: 24px; padding: 24px 12px; height: auto; }
 html.no-flip .pg { position: relative; width: min(100%, 620px); aspect-ratio: 7 / 10; }
+html.no-flip .beast__img img { opacity: 1; transform: none; }
 
 @media (prefers-reduced-motion: reduce) {
   .stage, .peel-hint::before, .peel-hint span { animation: none; }
+  .beast__img img { opacity: 1; transform: none; animation: none !important; }
   .chart__line { stroke-dashoffset: 0; }
   .chart__buys circle { opacity: 1; }
 }

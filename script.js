@@ -4,7 +4,7 @@
 
   // ---- Fill these in later ------------------------------------------------
   var X_URL = "#";            // e.g. "https://x.com/yourhandle"
-  var CONTRACT_ADDRESS = "";  // paste the Solana CA here when live
+  var CONTRACT_ADDRESS = "GwSkMEy1pRgNuMSdrApdX6DaexBopgLm5KU32VP9pump"; // $GIRAFFE on Solana
   // -------------------------------------------------------------------------
 
   var root = document.documentElement;
@@ -208,8 +208,41 @@
   });
 
   if (CONTRACT_ADDRESS) {
+    var shortCA = CONTRACT_ADDRESS.slice(0, 6) + "…" + CONTRACT_ADDRESS.slice(-7);
     $all("[data-ca]").forEach(function (el) { el.textContent = CONTRACT_ADDRESS; el.classList.add("is-live"); });
+    $all("[data-ca-short]").forEach(function (el) { el.textContent = shortCA; });
     $all("[data-action='copy-ca']").forEach(function (b) { b.disabled = false; });
+  }
+
+  function legacyCopy(text) {
+    return new Promise(function (res, rej) {
+      var ta = document.createElement("textarea");
+      ta.value = text; ta.setAttribute("readonly", ""); ta.style.cssText = "position:fixed;left:-9999px;top:0";
+      document.body.appendChild(ta); ta.select();
+      try { document.execCommand("copy") ? res() : rej(); } catch (e) { rej(e); }
+      ta.remove();
+    });
+  }
+  function copyText(text) {
+    if (navigator.clipboard && window.isSecureContext) {
+      return navigator.clipboard.writeText(text).catch(function () { return legacyCopy(text); });
+    }
+    return legacyCopy(text);
+  }
+  function copyCA() {
+    if (!CONTRACT_ADDRESS) return;
+    copyText(CONTRACT_ADDRESS).then(function () {
+      $all("[data-copy-label]").forEach(function (el) {
+        if (!el.dataset.orig) el.dataset.orig = el.textContent;
+        el.textContent = "Copied ✓";
+        el.classList.add("is-copied");
+      });
+      thump(0, 0.35);
+      clearTimeout(copyCA.t);
+      copyCA.t = setTimeout(function () {
+        $all("[data-copy-label]").forEach(function (el) { el.textContent = el.dataset.orig; el.classList.remove("is-copied"); });
+      }, 1600);
+    }, function () {});
   }
 
   var editionBtns = $all("[data-set-edition]");
@@ -469,7 +502,9 @@
     hint.textContent = isPortrait()
       ? (coarse ? "Swipe to turn · tap a page to read it" : "Drag a corner or use ← → · 🔍 to read up close")
       : "Drag a corner, click the arrows, or use ← → keys";
-    if (vis.indexOf(5) !== -1) { var ch = document.getElementById("chart"); if (ch) ch.classList.add("is-in"); }
+    vis.forEach(function (i) {
+      $all(".chart, .beasts", pages[i]).forEach(function (el) { el.classList.add("is-in"); });
+    });
   }
 
   pf.on("flip", function () {
@@ -544,7 +579,7 @@
       wrap.style.backgroundImage = "var(--tex" + (i % 4) + ")";
       var inner = pages[i].querySelector(".pg__inner").cloneNode(true);
       $all("[id]", inner).forEach(function (el) { el.removeAttribute("id"); });
-      $all(".chart", inner).forEach(function (el) { el.classList.add("is-in"); });
+      $all(".chart, .beasts", inner).forEach(function (el) { el.classList.add("is-in"); });
       wrap.appendChild(inner);
       readerScroll.appendChild(wrap);
     });
@@ -575,12 +610,7 @@
       if (act === "scare") scare(t.closest("[data-scare]"));
       else if (act === "read" && pf) openReader();
       else if (act === "close-reader") closeReader();
-      else if (act === "copy-ca" && CONTRACT_ADDRESS && navigator.clipboard) {
-        navigator.clipboard.writeText(CONTRACT_ADDRESS).then(function () {
-          $all("[data-action='copy-ca']").forEach(function (b) { b.textContent = "Copied"; });
-          setTimeout(function () { $all("[data-action='copy-ca']").forEach(function (b) { b.textContent = "Copy"; }); }, 1600);
-        });
-      }
+      else if (act === "copy-ca") copyCA();
     });
   }
 })();

@@ -415,7 +415,7 @@ html[data-edition="gold"] .edition__btn[data-set-edition="gold"] { background: v
 }
 .plate--woodcut .plate__frame { background: transparent; padding: .3em; }
 .plate--woodcut img {
-  filter: invert(1) grayscale(1) contrast(1.4) brightness(1.04) sepia(.25);
+  filter: grayscale(1) contrast(1.1) sepia(.3);
   mix-blend-mode: multiply;
 }
 
